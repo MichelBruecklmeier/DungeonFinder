@@ -1,0 +1,16 @@
+#The .set file format is just because i felt like it
+# <- is used for comments the interpreter will immidietly skip any line that contains #
+#This does not matter if it has usable code
+#Furthermore you bundle the id or the index of the tile with the rect option
+#which defines your rectangle bounds [x,y,width,height] and supports multiple collider definers
+{id:[37,193],rect:[12,0,5,17]}
+{id:[21,177],rect:[0,0,5,17]}
+
+{id:[10,166],rect:[0,0,17,5]}
+#Corner pieces
+{id:8,rect:[0,0,5,16][5,0,11,5]}
+{id:11,rect:[12,0,5,17][0,0,12,5]}
+{id:47,rect:[0,12,12,5][0,0,5,17]}
+{id:203,rect:[5,12,12,5][0,0,5,17]}
+
+
