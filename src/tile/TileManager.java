@@ -14,8 +14,8 @@ import java.util.Scanner;
 
 public class TileManager {
     //Only able to do a 16:9 ration and will be able to change later if possible
-    public static int TILE_COLS = 16;
-    public static int TILE_ROWS = 9;
+    public static int TILE_COLS = 32;
+    public static int TILE_ROWS = 18;
     public static int TILE_WORLD_ROWS = 100;
     public static int TILE_WORLD_COLS = 100;
     public static int TILE_SIZE = Window.SCREEN_HEIGHT / TILE_ROWS;
@@ -26,7 +26,7 @@ public class TileManager {
     public TileManager() {
         loadImages();
         Tile.scale = TILE_SIZE/16;
-        colliderLoader.setTileColliders(TILES);
+        colliderLoader.setCollider(TILES);
     }
     //Method to load images and then create a new tile object to be placed into
     //The tile object is going to be used to hold data for image and colliders and any specail properties
@@ -52,6 +52,8 @@ public class TileManager {
         try{
             File file = new File(Paths.get("res\\rooms\\"+path).toAbsolutePath().toString());
             Scanner reader = new Scanner(file);
+
+
             for(int row = 0; row < TILE_ROWS; row++){
                 String line = reader.nextLine();
                 for(int col = 0; col < TILE_COLS; col++){
@@ -93,41 +95,43 @@ public class TileManager {
         }
     }
     public boolean colliding(Entity ent){
-        int speed = 5;
-        //Predict the future :mind-blown:
-        int yChange = switch(ent.getDirection()){
-            case 'u' -> -speed;
-            case 'd' -> speed;
-            default -> 0;
-        };
-        int xChange = switch(ent.getDirection()){
-            case 'r' -> speed;
-            case 'l' -> -speed;
-            default -> 0;
-        };
-
-        int RightColPos = (ent.getCollider().x+ent.getCollider().width + xChange)/(TILE_SIZE);
-        int LeftColPos = (ent.getCollider().x + xChange)/(TILE_SIZE);
-        int TopRowPos = (ent.getCollider().y + yChange)/(TILE_SIZE);
-        int BottomRowPos = (ent.getCollider().y+ent.getCollider().height + yChange)/(TILE_SIZE);
-//        Rectangle rect[] = {new Rectangle(ent.getCollider().x+xChange, ent.getCollider().y+yChange, ent.getCollider().width, ent.getCollider().height),
-//                new Rectangle(ent.getCollider().x-xChange,ent.getCollider().y+yChange, ent.getCollider().width, ent.getCollider().height),
-//                new Rectangle(ent.getCollider().x+xChange,ent.getCollider().y-yChange, ent.getCollider().width, ent.getCollider().height),
-//                new Rectangle(ent.getCollider().x-xChange,ent.getCollider().y-yChange, ent.getCollider().width, ent.getCollider().height)};
-
-        Rectangle r =new Rectangle(ent.getCollider().x+xChange, ent.getCollider().y+yChange, ent.getCollider().width, ent.getCollider().height);
-                if (checkTileMapCollision(TopRowPos, RightColPos, r))
-                    return true;
-                if (checkTileMapCollision(TopRowPos, LeftColPos, r))
-                    return true;
-                if (checkTileMapCollision(BottomRowPos, RightColPos, r))
-                    return true;
-                if (checkTileMapCollision(TopRowPos, LeftColPos, r))
-                    return true;
-
-
-
         return false;
+//        return false;
+//        int speed = 5;
+//        //Predict the future :mind-blown:
+//        int yChange = switch(ent.getDirection()){
+//            case 'u' -> -speed;
+//            case 'd' -> speed;
+//            default -> 0;
+//        };
+//        int xChange = switch(ent.getDirection()){
+//            case 'r' -> speed;
+//            case 'l' -> -speed;
+//            default -> 0;
+//        };
+//
+//        int RightColPos = (ent.getCollider().x+ent.getCollider().width + xChange)/(TILE_SIZE);
+//        int LeftColPos = (ent.getCollider().x + xChange)/(TILE_SIZE);
+//        int TopRowPos = (ent.getCollider().y + yChange)/(TILE_SIZE);
+//        int BottomRowPos = (ent.getCollider().y+ent.getCollider().height + yChange)/(TILE_SIZE);
+////        Rectangle rect[] = {new Rectangle(ent.getCollider().x+xChange, ent.getCollider().y+yChange, ent.getCollider().width, ent.getCollider().height),
+////                new Rectangle(ent.getCollider().x-xChange,ent.getCollider().y+yChange, ent.getCollider().width, ent.getCollider().height),
+////                new Rectangle(ent.getCollider().x+xChange,ent.getCollider().y-yChange, ent.getCollider().width, ent.getCollider().height),
+////                new Rectangle(ent.getCollider().x-xChange,ent.getCollider().y-yChange, ent.getCollider().width, ent.getCollider().height)};
+//
+//        Rectangle r =new Rectangle(ent.getCollider().x+xChange, ent.getCollider().y+yChange, ent.getCollider().width, ent.getCollider().height);
+//                if (checkTileMapCollision(TopRowPos, RightColPos, r))
+//                    return true;
+//                if (checkTileMapCollision(TopRowPos, LeftColPos, r))
+//                    return true;
+//                if (checkTileMapCollision(BottomRowPos, RightColPos, r))
+//                    return true;
+//                if (checkTileMapCollision(TopRowPos, LeftColPos, r))
+//                    return true;
+//
+//
+//
+//        return false;
     }
     private boolean checkTileMapCollision(int row, int col,Rectangle rect){
         if(currentTiles[row][col].colliders.length!=0) {

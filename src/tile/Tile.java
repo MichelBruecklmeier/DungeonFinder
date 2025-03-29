@@ -8,6 +8,7 @@ public class Tile {
 
     BufferedImage image;
     public Rectangle[] colliders = new Rectangle[0];
+    boolean collider;
     public int currentColliderId = 0;
     public Tile(BufferedImage image){
         this.image = image;

@@ -3,6 +3,9 @@ package entity;
 import Utils.KeyHandler;
 import Utils.UtilityTool;
 import main.Window;
+import tile.Tile;
+import tile.TileManager;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -85,18 +88,18 @@ public class ENT_Player extends Entity{
 
     void init() {
         frameSize = 16;
-        scale = 5;
+        scale = TileManager.TILE_SIZE/16.;
         speed = 5;
         ENTITY_ANIMATION = new BufferedImage[9][6];
         try {
             for(int i = 0; i < 9; i++) {
-                ENTITY_ANIMATION[i] = UtilityTool.cutPiece(ENTITY_IMAGE, 5, frameSize, scale, 0, i);
+                ENTITY_ANIMATION[i] = UtilityTool.cutPiece(ENTITY_IMAGE, 5, frameSize, TileManager.TILE_SIZE/16., 0, i);
             }
         } catch (IOException e) {
             System.err.println("Failed to cut image");
         }
         //Set up the collider
-        collisionBox = new Rectangle((int)(3*scale),6*(int)scale,10*(int)scale,10*(int)scale);
+        collisionBox = new Rectangle((int)(6*scale),(int)(7*scale), (int)(6*scale), (int)(8*scale));
         offset = new int[2];
         offset[0] = collisionBox.x;
         offset[1] = collisionBox.y;
@@ -125,7 +128,6 @@ public class ENT_Player extends Entity{
     double yChange = 0;
     private void inputHandler(){
 
-        //TODO: Make movement less robotic
 
         //Y movements
 

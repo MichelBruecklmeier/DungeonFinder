@@ -3,34 +3,35 @@ package main;
 import Utils.KeyHandler;
 import entity.ENT_Player;
 import entity.Entity;
+import obj.ObjectHandler;
 import tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+
 
 public class Window extends JPanel implements Runnable {
 
     public static int FPS = 60;
+    //Preferred size not actual size
     public static int SCREEN_WIDTH = 1366;
     public static int SCREEN_HEIGHT = 768;
 
 
 
     public static double RATIO = SCREEN_WIDTH/SCREEN_HEIGHT;
-
+    public static int TICKER = 1;
     ScreenPrint textDisplay = new ScreenPrint();
     Thread thread;
     KeyHandler keyHandler = new KeyHandler();
     public TileManager tileManager = new TileManager();
+    //Weird work around just go with it trust ong ong
+    public ObjectHandler objectHandler = new ObjectHandler();
     ArrayList<Entity> Entities = new ArrayList<Entity>();
     public Window() {
-        this.setPreferredSize(new Dimension(SCREEN_WIDTH,SCREEN_HEIGHT));
+        //We base the screen dimensions of the previous size to the ones we are going to assign
+        this.setPreferredSize(new Dimension(TileManager.TILE_SIZE*TileManager.TILE_COLS,TileManager.TILE_SIZE*TileManager.TILE_ROWS));
         this.setBackground(Color.black);
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
@@ -82,7 +83,8 @@ public class Window extends JPanel implements Runnable {
 
     public void update(){
         Entities.forEach((n) -> n.update());
-
+        objectHandler.update();
+        TICKER++;
     }
 
     public void paintComponent(Graphics g){
@@ -92,6 +94,7 @@ public class Window extends JPanel implements Runnable {
         g2.drawRect(0, 0, 10, 10);
         textDisplay.update(g2);
         tileManager.draw(g2);
+        objectHandler.draw(g2);
         Entities.forEach((n) -> n.draw(g2));
 
         g2.dispose();

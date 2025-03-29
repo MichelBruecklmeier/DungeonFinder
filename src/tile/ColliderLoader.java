@@ -2,6 +2,7 @@ package tile;
 
 import java.awt.*;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -12,11 +13,42 @@ public class ColliderLoader {
 
 
     ArrayList<String> settings = new ArrayList<String>();
+    boolean[] collision = new boolean[45*13];
     public ColliderLoader() {
         loadFile();
     }
+    //A simple helper function meant to parse each int from the file stremlining the process just a bit
+    private int[] parseArr(String[] str){
+        int[] arr = new int[str.length];
+        for(int i = 0; i < str.length; i++){
+            arr[i] = Integer.parseInt(str[i]);
+        }
+        return arr;
+    }
+    //New loader method which stroes the collision data as either the tile is a collider or not
+    public void loadFile() {
+        try{
+            File file = new File(Paths.get("res\\tiles\\collider.set").toAbsolutePath().toString());
+            Scanner reader = new Scanner(file);
+            //Go thru the file and parse everything
+            while (reader.hasNextLine()) {
+                int[] data = parseArr(reader.nextLine().split(","));
+                for(int i = 0; i < data.length; i++){
+                    //If its 1 in the array then it is a collider
+                    collision[data[i]] = data[i] == 1;
+                }
+            }
 
-    public void loadFile(){
+        } catch (FileNotFoundException e) {
+            System.err.println("Failed to load file");
+        }
+    }
+    public void mountColliders(Tile[] tiles){
+
+    }
+
+    //I didnt read the tilemap i was using so this whole piece of junk is usellses but might be useful for other projects
+    public void loadFileOLD(){
         try{
             File file = new File(Paths.get("res\\tiles\\collider.set").toAbsolutePath().toString());
             Scanner reader = new Scanner(file);
@@ -39,6 +71,12 @@ public class ColliderLoader {
         }
     }
 
+    public void setCollider(Tile[] tiles){
+
+        for(int i = 0; i < tiles.length; i++){
+
+        }
+    }
     public void setTileColliders(Tile[] tiles){
         for(int i = 0; i < settings.size(); i++){
             String setting = settings.get(i);
@@ -62,7 +100,6 @@ public class ColliderLoader {
                 }
             }
             //Splits the string into just numbers for the new rect
-            //TODO: Handle multiple settings for colliders
             String line = setting.split("rect:")[1].split("}")[0];
             for(int z = 0; z<id.length;z++)
                 tiles[id[z]].colliders = new Rectangle[line.split("]").length];
