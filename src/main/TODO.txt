@@ -1,0 +1,9 @@
+Fix the weird edges on the screen
+^probably from truncation on the tile sizes best fix make the actual width and height of screen depended on how many tiles
+^^Want to leave this in because im the best programmer in the world and it worked first try
+
+TODO: remove any use of the old collider system.
+
+
+TODO: Make the obj class more defined and have specific specifications for children
+TODO: Make a event handler for the obj class in order to make the event handling more robust and custom

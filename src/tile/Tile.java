@@ -8,7 +8,7 @@ public class Tile {
 
     BufferedImage image;
     public Rectangle[] colliders = new Rectangle[0];
-    boolean collider;
+    public boolean collider;
     public int currentColliderId = 0;
     public Tile(BufferedImage image){
         this.image = image;
@@ -17,6 +17,7 @@ public class Tile {
         this.image = tile.image;
         this.currentColliderId = tile.currentColliderId;
         this.colliders = colliderCopy(tile);
+        this.collider = tile.collider;
     }
     public Rectangle[] colliderCopy(Tile tile){
         Rectangle[] copy = new Rectangle[tile.colliders.length];

@@ -22,6 +22,7 @@ public class Window extends JPanel implements Runnable {
 
     public static double RATIO = SCREEN_WIDTH/SCREEN_HEIGHT;
     public static int TICKER = 1;
+    public static String currentRoom = "example.txt";
     ScreenPrint textDisplay = new ScreenPrint();
     Thread thread;
     KeyHandler keyHandler = new KeyHandler();
@@ -40,7 +41,7 @@ public class Window extends JPanel implements Runnable {
     }
     public void init(){
         Entities.add(new ENT_Player(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,10,10,"characters/main/elf.png","Player",this));
-        tileManager.load("example.txt");
+        tileManager.load(currentRoom);
     }
 
     public void startThread(){

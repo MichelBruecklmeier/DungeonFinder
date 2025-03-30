@@ -31,21 +31,22 @@ public class ColliderLoader {
             File file = new File(Paths.get("res\\tiles\\collider.set").toAbsolutePath().toString());
             Scanner reader = new Scanner(file);
             //Go thru the file and parse everything
+            //Row is so we have an offset so it doesn't overwrite just the first row over and over
+            int row = 0;
             while (reader.hasNextLine()) {
                 int[] data = parseArr(reader.nextLine().split(","));
                 for(int i = 0; i < data.length; i++){
                     //If its 1 in the array then it is a collider
-                    collision[data[i]] = data[i] == 1;
+                    collision[(row * data.length) + i] = data[i] == 1;
                 }
+                row ++;
             }
 
         } catch (FileNotFoundException e) {
             System.err.println("Failed to load file");
         }
     }
-    public void mountColliders(Tile[] tiles){
 
-    }
 
     //I didnt read the tilemap i was using so this whole piece of junk is usellses but might be useful for other projects
     public void loadFileOLD(){
@@ -63,7 +64,7 @@ public class ColliderLoader {
                         break;
 
                 }
-                System.out.println(Arrays.toString(settings.toArray()));
+
 
             }
         } catch(IOException e){
@@ -74,7 +75,7 @@ public class ColliderLoader {
     public void setCollider(Tile[] tiles){
 
         for(int i = 0; i < tiles.length; i++){
-
+            tiles[i].collider = collision[i];
         }
     }
     public void setTileColliders(Tile[] tiles){

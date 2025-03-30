@@ -27,6 +27,9 @@ public class TileManager {
         loadImages();
         Tile.scale = TILE_SIZE/16;
         colliderLoader.setCollider(TILES);
+        for(Tile tile: TILES) {
+            System.out.println(tile.collider);
+        }
     }
     //Method to load images and then create a new tile object to be placed into
     //The tile object is going to be used to hold data for image and colliders and any specail properties
@@ -95,43 +98,36 @@ public class TileManager {
         }
     }
     public boolean colliding(Entity ent){
-        return false;
-//        return false;
-//        int speed = 5;
-//        //Predict the future :mind-blown:
-//        int yChange = switch(ent.getDirection()){
-//            case 'u' -> -speed;
-//            case 'd' -> speed;
-//            default -> 0;
-//        };
-//        int xChange = switch(ent.getDirection()){
-//            case 'r' -> speed;
-//            case 'l' -> -speed;
-//            default -> 0;
-//        };
-//
-//        int RightColPos = (ent.getCollider().x+ent.getCollider().width + xChange)/(TILE_SIZE);
-//        int LeftColPos = (ent.getCollider().x + xChange)/(TILE_SIZE);
-//        int TopRowPos = (ent.getCollider().y + yChange)/(TILE_SIZE);
-//        int BottomRowPos = (ent.getCollider().y+ent.getCollider().height + yChange)/(TILE_SIZE);
-////        Rectangle rect[] = {new Rectangle(ent.getCollider().x+xChange, ent.getCollider().y+yChange, ent.getCollider().width, ent.getCollider().height),
-////                new Rectangle(ent.getCollider().x-xChange,ent.getCollider().y+yChange, ent.getCollider().width, ent.getCollider().height),
-////                new Rectangle(ent.getCollider().x+xChange,ent.getCollider().y-yChange, ent.getCollider().width, ent.getCollider().height),
-////                new Rectangle(ent.getCollider().x-xChange,ent.getCollider().y-yChange, ent.getCollider().width, ent.getCollider().height)};
-//
-//        Rectangle r =new Rectangle(ent.getCollider().x+xChange, ent.getCollider().y+yChange, ent.getCollider().width, ent.getCollider().height);
-//                if (checkTileMapCollision(TopRowPos, RightColPos, r))
-//                    return true;
-//                if (checkTileMapCollision(TopRowPos, LeftColPos, r))
-//                    return true;
-//                if (checkTileMapCollision(BottomRowPos, RightColPos, r))
-//                    return true;
-//                if (checkTileMapCollision(TopRowPos, LeftColPos, r))
-//                    return true;
-//
-//
-//
-//        return false;
+
+        int speed = 5;
+        //Predict the future :mind-blown:
+        int yChange = switch(ent.getDirection()){
+            case 'u' -> -speed;
+            case 'd' -> speed;
+            default -> 0;
+        };
+        int xChange = switch(ent.getDirection()){
+            case 'r' -> speed;
+            case 'l' -> -speed;
+            default -> 0;
+        };
+
+        int RightColPos = (ent.getCollider().x+ent.getCollider().width + xChange)/(TILE_SIZE);
+        int LeftColPos = (ent.getCollider().x + xChange)/(TILE_SIZE);
+        int TopRowPos = (ent.getCollider().y + yChange)/(TILE_SIZE);
+        int BottomRowPos = (ent.getCollider().y+ent.getCollider().height + yChange)/(TILE_SIZE);
+        if(check(RightColPos,TopRowPos))
+            return true;
+        if(check(LeftColPos,BottomRowPos))
+            return true;
+        if(check(RightColPos,BottomRowPos))
+            return true;
+        return check(LeftColPos, TopRowPos);
+    }
+    //Smaller name to make it more usefull
+    private boolean check(int col, int row){
+//        System.out.println(row +" "+col+" " + currentTiles[row][col].collider);
+        return currentTiles[row][col].collider;
     }
     private boolean checkTileMapCollision(int row, int col,Rectangle rect){
         if(currentTiles[row][col].colliders.length!=0) {
