@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 public class ObjectDataLoader {
     ArrayList<String> settings = new ArrayList<String>();
+    ArrayList<Obj> objects = new ArrayList<Obj>();
     public ObjectDataLoader() {
         loadMap();
     }
@@ -30,10 +31,30 @@ public class ObjectDataLoader {
             process();
         }
     }
-
+    //This will take each individual element of the settings and distribute it to proper methods
     public void process(){
         for(String s : settings){
-            String[] elements = s.split(",");
+            String[] elements = s.split("\\{");
+            //To get rid of the end } we use this
+            for(int i = 0; i < elements.length; i++){
+                elements[i] = elements[i].replace("}", "");
+            }
+            //Now what we can do is treat each setting as a indudual setting instead of the whole line
+            for(String element : elements){
+                //all we need to see is the type of the object then hand it off to the method
+                String type = element.split("type:\"")[1].split("\"\\.")[0];
+                switch(type){
+                    case "key" -> processKey(element);
+                }
+            }
         }
+    }
+
+    public void processKey(String setting){
+        //Because the pos of the setting looks like (x,y) we just split it
+        String pos = setting.split("\\(")[1].split("\\)")[0];
+        int x = Integer.parseInt(pos.split(",")[0]);
+        int y = Integer.parseInt(pos.split(",")[1]);
+
     }
 }

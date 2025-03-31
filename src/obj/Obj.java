@@ -18,6 +18,9 @@ public class Obj {
     public Obj(BufferedImage[] animation) {
         ANIMATION = animation;
     }
+    public Obj(String path){
+
+    }
     public void rescale(){
 
             for(int i = 0; i<ANIMATION.length; i++){
