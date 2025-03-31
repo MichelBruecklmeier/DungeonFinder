@@ -99,7 +99,7 @@ public class ENT_Player extends Entity{
             System.err.println("Failed to cut image");
         }
         //Set up the collider
-        collisionBox = new Rectangle((int)(6*scale),(int)(7*scale), (int)(6*scale), (int)(8*scale));
+        collisionBox = new Rectangle((int)(6*scale),(int)(7 *scale), (int)(6*scale), (int)(8*scale));
         offset = new int[2];
         offset[0] = collisionBox.x;
         offset[1] = collisionBox.y;

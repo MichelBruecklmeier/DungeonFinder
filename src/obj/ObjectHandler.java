@@ -16,14 +16,15 @@ public class ObjectHandler {
     ArrayList<Obj> objects = new ArrayList<Obj>();
     BufferedImage[][] ALL_ANIMATIONS = new BufferedImage[8][4];
     ObjectDataLoader loader;
+    public static BufferedImage animationSheet;
     public ObjectHandler() {
         loadAnimations();
-        loadObjects();
         loader = new ObjectDataLoader();
+        loadObjects();
     }
     public void loadAnimations() {
         try{
-            BufferedImage animationSheet = UtilityTool.loadImage("props\\pickup_items_animated.png");
+            animationSheet = UtilityTool.loadImage("props\\pickup_items_animated.png");
             for(int row = 0; row < ALL_ANIMATIONS.length; row++){
                 ALL_ANIMATIONS[row] = UtilityTool.cutPiece(animationSheet, ALL_ANIMATIONS[row].length, 16, TileManager.TILE_SIZE/16,0,row);
             }
@@ -34,8 +35,7 @@ public class ObjectHandler {
     }
     public void loadObjects(){
         //TEMPORARY
-        objects.add(new OBJ_Key(ALL_ANIMATIONS[1]));
-        objects.get(0).setPos(10,10);
+        objects = loader.getObjects();
         for(int row = 0; row < objects.size(); row++){
         }
     }

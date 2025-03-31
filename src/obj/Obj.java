@@ -7,19 +7,23 @@ import Utils.UtilityTool;
 import main.Window;
 import tile.TileManager;
 
-public class Obj {
+public abstract class Obj implements Interactables{
     BufferedImage[] ANIMATION;
     Rectangle collider;
+    public String type;
+    private static int ID = 0;
+    public int id = ID++;
     int posX, posY;
     int ANIMATION_SPEED;
     int currentIndex;
     //Have some boolean values to define what the object behaviour has
     boolean  PICK_UP;
-    public Obj(BufferedImage[] animation) {
-        ANIMATION = animation;
+    public Obj(){
+        //This should never be used unless calling another object
     }
-    public Obj(String path){
 
+    public void setImage(BufferedImage[] animation) {
+        ANIMATION = animation;
     }
     public void rescale(){
 
@@ -38,9 +42,6 @@ public class Obj {
     }
     public void update(){
 
-    }
-    public boolean colliding(){
-        return false;
     }
     public void draw(Graphics2D g2){
         if(Window.TICKER % ANIMATION_SPEED == 0){

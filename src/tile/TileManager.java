@@ -21,15 +21,12 @@ public class TileManager {
     public static int TILE_SIZE = Window.SCREEN_HEIGHT / TILE_ROWS;
     ColliderLoader colliderLoader = new ColliderLoader();
     Tile[] TILES = new Tile[45*13]; //Overall tile size
-    int[][] currentTileMap = new int[TILE_ROWS][TILE_COLS];
-    MapTile[][] currentTiles = new MapTile[TILE_ROWS][TILE_COLS];
+     int[][] currentTileMap = new int[TILE_ROWS][TILE_COLS];
+    public MapTile[][] currentTiles = new MapTile[TILE_ROWS][TILE_COLS];
     public TileManager() {
         loadImages();
         Tile.scale = TILE_SIZE/16;
         colliderLoader.setCollider(TILES);
-        for(Tile tile: TILES) {
-            System.out.println(tile.collider);
-        }
     }
     //Method to load images and then create a new tile object to be placed into
     //The tile object is going to be used to hold data for image and colliders and any specail properties
@@ -89,13 +86,13 @@ public class TileManager {
                 }
             }
         }
-        for(int row = 0; row<TILE_ROWS; row++){
-            for(int col = 0 ; col < TILE_COLS; col++){
-                g2.setColor(Color.red);
-                currentTiles[row][col].debug(g2);
-
-            }
-        }
+//        for(int row = 0; row<TILE_ROWS; row++){
+//            for(int col = 0 ; col < TILE_COLS; col++){
+//                g2.setColor(Color.red);
+//                currentTiles[row][col].debug(g2);
+//
+//            }
+//        }
     }
     public boolean colliding(Entity ent){
 
