@@ -3,12 +3,17 @@ package entity;
 import Utils.KeyHandler;
 import Utils.UtilityTool;
 import main.Window;
-import tile.Tile;
+import obj.Obj;
 import tile.TileManager;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Arrays;
+
+import static tile.TileManager.TILE_SIZE;
+import static main.Window.deltaTime;
+//The player entity loosley is based off the entity parent but is very modified as it's the controlled character
 enum Type   {
     IDLE_RIGHT(0,3,15),
     IDLE_LEFT(1,3,15),
@@ -50,12 +55,32 @@ enum Type   {
     }
 }
 
+class Inventory{
+    public Obj[] inventory = new Obj[10];
+    public Inventory(){
 
+    }
+
+    public boolean add(Obj object){
+        for(int i=0;i<inventory.length;i++){
+            if(inventory[i]==null){
+                inventory[i]=object;
+                return true;
+            }
+        }
+        return false;
+    }
+    public void remove(int slot){
+        inventory[slot]=null;
+    }
+}
 
 public class ENT_Player extends Entity{
 
+
     Window window;
-    private double fadeOffSpeed = 0.6;
+    Inventory inventory = new Inventory();
+    private double fadeOffSpeed = 0.9;
     public ENT_Player(int starting_x, int starting_y, int width, int height, String imagePath, String name, Window window) {
 
         super(starting_x, starting_y, width, height, imagePath, name);
@@ -77,7 +102,7 @@ public class ENT_Player extends Entity{
             default -> Type.IDLE_RIGHT;
         };
         g2.drawImage(ENTITY_ANIMATION[type.get()][type.itt()], posX, posY, null);
-        debug(g2);
+//        debug(g2);
     }
     @Override
     public void debug(Graphics2D g2){
@@ -89,11 +114,11 @@ public class ENT_Player extends Entity{
     void init() {
         frameSize = 16;
         scale = TileManager.TILE_SIZE/16.;
-        speed = 5;
+        speed = 50;
         ENTITY_ANIMATION = new BufferedImage[9][6];
         try {
             for(int i = 0; i < 9; i++) {
-                ENTITY_ANIMATION[i] = UtilityTool.cutPiece(ENTITY_IMAGE, 5, frameSize, TileManager.TILE_SIZE/16., 0, i);
+                ENTITY_ANIMATION[i] = UtilityTool.cutImagePiece(ENTITY_IMAGE, 5, frameSize, TileManager.TILE_SIZE/16., 0, i);
             }
         } catch (IOException e) {
             System.err.println("Failed to cut image");
@@ -118,14 +143,29 @@ public class ENT_Player extends Entity{
             }
         }
         inputHandler();
-
+        RightCol =  (posX+width)/(TILE_SIZE);
+        LeftCol =  (posY)/(TILE_SIZE);
+        TopRow =  (posY)/(TILE_SIZE);
+        BottomRow =  (posY+height)/(TILE_SIZE);
 
         collisionBox.x = posX + offset[0];
         collisionBox.y = posY + offset[1];
         Type.update();
+
+        //Check for object collisions
+        Obj object = window.objectHandler.colliding(this);
+        if(object != null){
+            if(object.type.equals("key")){
+                inventory.add(object.pickup());
+                System.out.println(Arrays.toString(inventory.inventory));
+            }
+
+
+        }
     }
     double xChange = 0;
     double yChange = 0;
+    char horzMove = 'r';
     private void inputHandler(){
 
 
@@ -133,24 +173,26 @@ public class ENT_Player extends Entity{
 
         if(KeyHandler.keys[83]){
             direction = 'd';
-            yChange = speed;
+            yChange = speed * deltaTime;
             Type.current = 2;
         }
         else if(KeyHandler.keys[87]){
             direction = 'u';
-            yChange = -speed;
+            yChange = -speed * deltaTime;
             Type.current = 3;
         }
         //X movements
         else if(KeyHandler.keys[68]){
             direction = 'r';
-            xChange = speed;
+            horzMove = 'r';
+            xChange = speed * deltaTime;
 
             Type.current = 2;
         }
         else if(KeyHandler.keys[65]){
             direction = 'l';
-            xChange = -speed;
+            horzMove = 'l';
+            xChange = -speed * deltaTime;
             Type.current = 3;
         }
         if(!KeyHandler.keys[83] && !KeyHandler.keys[87] && !KeyHandler.keys[68] && !KeyHandler.keys[65]){
@@ -184,16 +226,9 @@ public class ENT_Player extends Entity{
             xChange = 0;
             yChange = 0;
         } else {
-            posY += (int) yChange;
-            posX += (int) xChange;
+            posY += (int) (yChange);
+            posX += (int) (xChange);
         }
-
-
-
-
-
-
-
 
     }
 

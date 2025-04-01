@@ -35,7 +35,7 @@ public class TileManager {
             BufferedImage[][] temp = new BufferedImage[45][13];
             BufferedImage img = UtilityTool.loadImage("TILES/TILES.png");
             for(int i = 0; i < temp.length; i++){
-                temp[i] = UtilityTool.cutPiece(img, temp[i].length,16,TILE_SIZE/16.,0,i);
+                temp[i] = UtilityTool.cutImagePiece(img, temp[i].length,16,TILE_SIZE/16.,0,i);
             }
             for(int row = 0; row < temp.length; row++){
                 for(int col = 0; col < temp[row].length; col++){
@@ -52,7 +52,7 @@ public class TileManager {
         try{
             File file = new File(Paths.get("res\\rooms\\"+path).toAbsolutePath().toString());
             Scanner reader = new Scanner(file);
-
+            reader.nextLine();
 
             for(int row = 0; row < TILE_ROWS; row++){
                 String line = reader.nextLine();
@@ -82,7 +82,7 @@ public class TileManager {
             for(int col = 0; col < TILE_COLS; col++){
                 if(currentTileMap[row][col] != -1) {
                     g2.drawImage(TILES[currentTileMap[row][col]].image, col * TILE_SIZE, row * TILE_SIZE, null);
-                    g2.drawRect(col * TILE_SIZE, row * TILE_SIZE, TILES[currentTileMap[row][col]].image.getWidth(), TILES[currentTileMap[row][col]].image.getHeight());
+//                    g2.drawRect(col * TILE_SIZE, row * TILE_SIZE, TILES[currentTileMap[row][col]].image.getWidth(), TILES[currentTileMap[row][col]].image.getHeight());
                 }
             }
         }
@@ -126,6 +126,7 @@ public class TileManager {
 //        System.out.println(row +" "+col+" " + currentTiles[row][col].collider);
         return currentTiles[row][col].collider;
     }
+    //Old method
     private boolean checkTileMapCollision(int row, int col,Rectangle rect){
         if(currentTiles[row][col].colliders.length!=0) {
             for (int i = 0; i < currentTiles[row][col].colliders.length; i++) {

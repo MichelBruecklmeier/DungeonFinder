@@ -60,10 +60,15 @@ public class ObjectDataLoader {
 
                     switch (type) {
                         case "key" -> processKey(element);
+                        case "door" -> processDoor(element);
                     }
                 }
             }
         }
+    }
+
+    public void processDoor(String settings){
+
     }
 
     public void processKey(String setting){

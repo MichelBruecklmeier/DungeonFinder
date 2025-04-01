@@ -23,12 +23,16 @@ public class UtilityTool {
 		return scaledImage;
 	}
 	//Image slicer for the animation sheets
-	public static BufferedImage[] cutPiece(BufferedImage image ,int length,int frameSize,double scale,int x,int y) throws IOException {
+	public static BufferedImage[] cutImagePiece(BufferedImage image , int length, int frameSize, double scale, int x, int y) throws IOException {
 		y *= frameSize;
 		BufferedImage[] returnArray = new BufferedImage[length];
 		for(int i = 0; i<length; i++) {
 			returnArray[i] = scaleImage(image.getSubimage((i+x)*frameSize, y, frameSize, frameSize), (int)(frameSize*scale), (int)(frameSize*scale));
 		}
 		return returnArray;
+	}
+	//Text file loader
+	public static File loadFile(String path) throws IOException {
+		return new File(Paths.get(path).toAbsolutePath().toString());
 	}
 }

@@ -13,6 +13,9 @@ public abstract class Obj implements Interactables{
     public String type;
     private static int ID = 0;
     public int id = ID++;
+    int row;
+    int col;
+    boolean isVisible;
     int posX, posY;
     int ANIMATION_SPEED;
     int currentIndex;
@@ -22,8 +25,10 @@ public abstract class Obj implements Interactables{
         //This should never be used unless calling another object
     }
 
+
     public void setImage(BufferedImage[] animation) {
         ANIMATION = animation;
+        setCollider(new Rectangle(posX, posY, TileManager.TILE_SIZE, TileManager.TILE_SIZE));
     }
     public void rescale(){
 
@@ -44,13 +49,18 @@ public abstract class Obj implements Interactables{
 
     }
     public void draw(Graphics2D g2){
-        if(Window.TICKER % ANIMATION_SPEED == 0){
-            currentIndex ++;
+        if(isVisible) {
+            if (Window.TICKER % ANIMATION_SPEED == 0) {
+                currentIndex++;
+            }
+            if (currentIndex == ANIMATION.length) {
+                currentIndex = 0;
+            }
+            g2.drawImage(ANIMATION[currentIndex], posX, posY, null);
         }
-        if(currentIndex == ANIMATION.length){
-            currentIndex = 0;
-        }
-        g2.drawImage(ANIMATION[currentIndex], posX, posY, null);
+    }
+    public String toString(){
+        return "Type: "+type+" ID: "+ id;
     }
 
 

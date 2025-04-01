@@ -7,6 +7,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+import static tile.TileManager.TILE_SIZE;
+
 
 public abstract class  Entity {
 
@@ -14,6 +16,8 @@ public abstract class  Entity {
     protected String name;
     protected int posX;
     protected int posY;
+    public int RightCol, LeftCol;
+    public int TopRow, BottomRow;
     protected int width;
     protected int height;
     protected int frameSize;
@@ -28,6 +32,10 @@ public abstract class  Entity {
     public Entity(int starting_x, int starting_y, int width, int height, String imagePath, String name) {
         posX = starting_x;
         posY = starting_y;
+        RightCol =  (posX+width)/(TILE_SIZE);
+        LeftCol =  (posY)/(TILE_SIZE);
+        TopRow =  (posY)/(TILE_SIZE);
+        BottomRow =  (posY+height)/(TILE_SIZE);
         this.width = width;
         this.height = height;
         this.name = name;
