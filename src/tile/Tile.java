@@ -1,5 +1,8 @@
 package tile;
-import java.awt.*;
+import main.Window;
+
+import java.awt.Rectangle;
+import main.Window;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 

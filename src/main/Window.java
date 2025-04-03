@@ -9,7 +9,6 @@ import tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -36,9 +35,9 @@ public class Window extends JPanel implements Runnable {
     ScreenPrint textDisplay = new ScreenPrint();
     Thread thread;
     KeyHandler keyHandler = new KeyHandler();
-    public TileManager tileManager = new TileManager();
+    public TileManager tileManager;
     //Weird work around just go with it trust ong ong
-    public ObjectHandler objectHandler = new ObjectHandler();
+    public ObjectHandler objectHandler;
     ArrayList<Entity> Entities = new ArrayList<Entity>();
     public ENT_Player player;
     public Window() {
@@ -54,6 +53,8 @@ public class Window extends JPanel implements Runnable {
 
     }
     public void init(){
+        tileManager = new TileManager();
+
         int x = 0;
         int y = 0;
         try {
@@ -67,6 +68,7 @@ public class Window extends JPanel implements Runnable {
         player = new ENT_Player(x*TileManager.TILE_SIZE,y*TileManager.TILE_SIZE,10,10,"characters/main/elf.png","Player",this);
         Entities.add(player);
         tileManager.load(currentRoom);
+        objectHandler = new ObjectHandler(this);
     }
 
     public void startThread(){

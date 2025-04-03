@@ -12,9 +12,11 @@ public abstract class Obj implements Interactables{
     Rectangle collider;
     public String type;
     private static int ID = 0;
-    public int id = ID++;
+    public int objectId = ID++;
+    public int id;
     int row;
     int col;
+
     boolean isVisible;
     int posX, posY;
     int ANIMATION_SPEED;
@@ -60,7 +62,7 @@ public abstract class Obj implements Interactables{
         }
     }
     public String toString(){
-        return "Type: "+type+" ID: "+ id;
+        return "Type: "+type+" ID: "+ objectId;
     }
 
 

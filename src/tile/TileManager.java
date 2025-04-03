@@ -65,15 +65,10 @@ public class TileManager {
                 }
             }
 
+
         } catch(FileNotFoundException e){
             e.printStackTrace();
         }
-//        for(int[] x: currentTileMap){
-//            for(int y: x){
-//                System.out.print(y+" ");
-//            }
-//            System.out.println();
-//        }
     }
     //Draw loops over all tileMap ints then that corrisponds to the indicie in the TILES[] array of the right map
     public void draw(Graphics2D g2){
@@ -121,9 +116,8 @@ public class TileManager {
             return true;
         return check(LeftColPos, TopRowPos);
     }
-    //Smaller name to make it more usefull
+    //Smaller name to make it more usefully
     private boolean check(int col, int row){
-//        System.out.println(row +" "+col+" " + currentTiles[row][col].collider);
         return currentTiles[row][col].collider;
     }
     //Old method

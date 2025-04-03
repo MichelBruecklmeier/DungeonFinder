@@ -60,7 +60,22 @@ class Inventory{
     public Inventory(){
 
     }
-
+    public int getItem(String type){
+        for(int i=0;i<inventory.length;i++) {
+            if(inventory[i] != null && inventory[i].type.equals(type)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    public int getItemId(int id){
+        for(int i = 0; i < inventory.length; i++) {
+            if (inventory[i] != null && inventory[i].id == id) {
+                return i;
+            }
+        }
+        return -1;
+    }
     public boolean add(Obj object){
         for(int i=0;i<inventory.length;i++){
             if(inventory[i]==null){
@@ -75,7 +90,7 @@ class Inventory{
     }
 }
 
-public class ENT_Player extends Entity{
+public class ENT_Player extends Entity {
 
 
     Window window;
@@ -154,12 +169,23 @@ public class ENT_Player extends Entity{
 
         //Check for object collisions
         Obj object = window.objectHandler.colliding(this);
-        if(object != null){
-            if(object.type.equals("key")){
-                inventory.add(object.pickup());
-                System.out.println(Arrays.toString(inventory.inventory));
-            }
+        if(object != null)
+            objectCollisionHandler(object);
 
+    }
+
+
+
+    boolean coliding = false;
+    private void objectCollisionHandler(Obj obj){
+        if(obj.type.equals("key")){
+            inventory.add(obj.pickup());
+            System.out.println(Arrays.toString(inventory.inventory));
+        }
+        else if(obj.type.equals("door") && inventory.getItem("key") != -1){
+            if(inventory.getItemId(obj.id) == inventory.getItem("key") ){
+                obj.onCollide();
+            }
 
         }
     }
@@ -205,7 +231,7 @@ public class ENT_Player extends Entity{
             //Fade off speed so its less blocky
 
         }
-        boolean colliding = window.tileManager.colliding(this);
+        boolean colliding = window.tileManager.colliding(this) || coliding;
         if(Math.abs(yChange) != yChange && yChange >=0)
             yChange = 0;
         else if(Math.abs(yChange) == yChange && yChange <=0)

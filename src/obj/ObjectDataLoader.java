@@ -12,7 +12,9 @@ import java.util.Scanner;
 public class ObjectDataLoader {
     ArrayList<String> settings = new ArrayList<String>();
     ArrayList<Obj> objects = new ArrayList<Obj>();
-    public ObjectDataLoader() {
+    Window window;
+    public ObjectDataLoader(Window window) {
+        this.window = window;
         loadMap();
     }
     public void loadMap() {
@@ -66,17 +68,28 @@ public class ObjectDataLoader {
             }
         }
     }
+    private int[] getStartingPos(String setting){
+        String pos = setting.split("\\(")[1].split("\\)")[0];
+        int x = Integer.parseInt(pos.split(",")[0]);
+        int y = Integer.parseInt(pos.split(",")[1]);
 
-    public void processDoor(String settings){
+        return new int[]{x, y};
+    }
+    private int getId(String setting){
+        return Integer.parseInt(setting.split("id:")[1].split("[,}]")[0]);
+    }
+    public void processDoor(String setting){
+        String sType = setting.split("doorType:")[1].split("[,}]")[0];
+        int type = Integer.parseInt(sType);
+        int[] pos = getStartingPos(setting);
+        objects.add(new OBJ_Door(pos[0],pos[1],type,getId(setting),window.tileManager.currentTiles[pos[1]][pos[0]]));
 
     }
 
     public void processKey(String setting){
         //Because the pos of the setting looks like (x,y) we just split it
-        String pos = setting.split("\\(")[1].split("\\)")[0];
-        int x = Integer.parseInt(pos.split(",")[0]);
-        int y = Integer.parseInt(pos.split(",")[1]);
-        objects.add(new OBJ_Key(x,y));
+        int[] pos = getStartingPos(setting);
+        objects.add(new OBJ_Key(pos[0],pos[1],getId(setting)));
     }
     public ArrayList<Obj> getObjects() {
         return objects;

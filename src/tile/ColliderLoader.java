@@ -84,12 +84,12 @@ public class ColliderLoader {
             //Index of where the new rect should go
 
             String idLine = settings.get(i).split("id:")[1].split(",")[1];
-            //Check for the legacy code version of only having one id looking id:1,
+            //Check for the legacy code version of only having one objectId looking objectId:1,
             int[] id = new int[1];
-            if(!settings.get(i).contains("id:[")){
+            if(!settings.get(i).contains("objectId:[")){
                 id[0] = Integer.parseInt(setting.split("id:")[1].split(",")[0]);
             } else {
-                //We cut the setting id:[num,num,num],rect... we cut it by that ], then check the things to the left and count the amount of commas we have
+                //We cut the setting objectId:[num,num,num],rect... we cut it by that ], then check the things to the left and count the amount of commas we have
                 int length = setting.split("id:")[1].split("],")[0].split(",").length;
                 id = new int[length];
                 String line = setting.split("id:\\[")[1].split("],")[0];

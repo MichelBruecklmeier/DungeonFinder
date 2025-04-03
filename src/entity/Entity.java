@@ -23,7 +23,6 @@ public abstract class  Entity {
     protected int frameSize;
     protected double scale;
     protected int speed;
-    public boolean colliding = false;
     protected char direction = 'r';
     protected Rectangle collisionBox;
     public BufferedImage ENTITY_IMAGE;

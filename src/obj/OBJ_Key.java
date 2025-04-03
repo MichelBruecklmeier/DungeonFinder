@@ -7,12 +7,17 @@ import tile.TileManager;
 import java.io.IOException;
 
 public class OBJ_Key extends Obj{
-
-    public OBJ_Key(int x, int y){
-        row = y;
-        col = x;
+    public OBJ_Key() {
+        ANIMATION_SPEED = 5;
+        PICK_UP = true;
         isVisible = true;
         type = "key";
+    }
+    public OBJ_Key(int x, int y,int id){
+        this();
+        row = y;
+        col = x;
+        this.id = id;
         setPos(x,y);
 
         try {
@@ -20,18 +25,14 @@ public class OBJ_Key extends Obj{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ANIMATION_SPEED = 5;
-        PICK_UP = true;
+
         rescale();
 
     }
 
     @Override
     public boolean colliding(Entity e) {
-        if(isVisible && e.getCollider().intersects(collider)){
-            return true;
-        }
-        return false;
+        return isVisible && e.getCollider().intersects(collider);
     }
 
     @Override

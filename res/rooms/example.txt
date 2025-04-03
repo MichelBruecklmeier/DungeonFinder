@@ -21,7 +21,7 @@
 
 
 __Objects
-{(2,2),type:"key",}
-{(4,1),type:"door",doorType:8}
+{(2,2),type:"key",id:1}
+{(15,8),type:"door",doorType:5,id:0}
 
 __Props

@@ -4,19 +4,19 @@ import Utils.UtilityTool;
 import entity.Entity;
 import tile.TileManager;
 
-import java.awt.*;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-
+import main.Window;
 public class ObjectHandler {
     public ArrayList<Obj> objects = new ArrayList<Obj>();
     BufferedImage[][] ALL_ANIMATIONS = new BufferedImage[8][4];
     ObjectDataLoader loader;
     public static BufferedImage animationSheet;
-    public ObjectHandler() {
+    public ObjectHandler(Window window) {
         loadAnimations();
-        loader = new ObjectDataLoader();
+        loader = new ObjectDataLoader(window);
         loadObjects();
     }
     public void loadAnimations() {
@@ -36,18 +36,27 @@ public class ObjectHandler {
     }
     public Obj colliding(Entity e){
         for(Obj obj : objects){
-            if(obj.colliding(e)){
-                return obj;
+            if(obj != null){
+                if(obj.colliding(e)){
+                    return obj;
+                }
             }
         }
         return null;
     }
 
+    public void debug(Graphics2D g2){
+        objects.forEach( (n) -> g2.draw(n.collider));
+    }
     public void update(){
         objects.forEach(Obj::update);
+
+
     }
     public void draw(Graphics2D g2){
         objects.forEach((n) -> n.draw(g2));
+
+        debug(g2);
     }
 
 
