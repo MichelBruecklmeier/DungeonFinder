@@ -117,7 +117,8 @@ public class ENT_Player extends Entity {
             default -> Type.IDLE_RIGHT;
         };
         g2.drawImage(ENTITY_ANIMATION[type.get()][type.itt()], posX, posY, null);
-//        debug(g2);
+        if(Window.debug)
+            debug(g2);
     }
     @Override
     public void debug(Graphics2D g2){
@@ -182,7 +183,7 @@ public class ENT_Player extends Entity {
             inventory.add(obj.pickup());
             System.out.println(Arrays.toString(inventory.inventory));
         }
-        else if(obj.type.equals("door") && inventory.getItem("key") != -1){
+        else if(obj.type.equals("door") && inventory.getItem("key") != -1 || obj.id == -1){
             if(inventory.getItemId(obj.id) == inventory.getItem("key") ){
                 obj.onCollide();
             }
@@ -200,12 +201,12 @@ public class ENT_Player extends Entity {
         if(KeyHandler.keys[83]){
             direction = 'd';
             yChange = speed * deltaTime;
-            Type.current = 2;
+            Type.current = (horzMove == 'r') ? 2:3;
         }
         else if(KeyHandler.keys[87]){
             direction = 'u';
             yChange = -speed * deltaTime;
-            Type.current = 3;
+            Type.current = (horzMove == 'r') ? 2:3;
         }
         //X movements
         else if(KeyHandler.keys[68]){

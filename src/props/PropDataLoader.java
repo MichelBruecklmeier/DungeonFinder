@@ -24,6 +24,7 @@ public class PropDataLoader {
             while(scanner.hasNextLine()){
                 settings.add(scanner.nextLine());
             }
+            scanner.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

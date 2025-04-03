@@ -35,7 +35,8 @@ public abstract class Obj implements Interactables{
     public void rescale(){
 
             for(int i = 0; i<ANIMATION.length; i++){
-                ANIMATION[i] = UtilityTool.scaleImage(ANIMATION[i],(int)(ANIMATION[i].getWidth() * TileManager.TILE_SIZE/32),(int)(ANIMATION[i].getHeight() * TileManager.TILE_SIZE/32));
+                if(ANIMATION[i] != null)
+                    ANIMATION[i] = UtilityTool.scaleImage(ANIMATION[i],(int)(ANIMATION[i].getWidth() * TileManager.TILE_SIZE/32),(int)(ANIMATION[i].getHeight() * TileManager.TILE_SIZE/32));
             }
 
     }
@@ -51,7 +52,7 @@ public abstract class Obj implements Interactables{
 
     }
     public void draw(Graphics2D g2){
-        if(isVisible) {
+        if(isVisible && ANIMATION[currentIndex] != null) {
             if (Window.TICKER % ANIMATION_SPEED == 0) {
                 currentIndex++;
             }

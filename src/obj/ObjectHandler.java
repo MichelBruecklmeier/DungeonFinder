@@ -7,6 +7,7 @@ import tile.TileManager;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import main.Window;
 public class ObjectHandler {
@@ -17,6 +18,10 @@ public class ObjectHandler {
     public ObjectHandler(Window window) {
         loadAnimations();
         loader = new ObjectDataLoader(window);
+        loadObjects();
+    }
+    public void loadMap(){
+        loader.loadMap();
         loadObjects();
     }
     public void loadAnimations() {
@@ -33,6 +38,8 @@ public class ObjectHandler {
     public void loadObjects(){
         //TEMPORARY
         objects = loader.getObjects();
+        System.out.println("EXPECTED: "+loader.getObjects());
+        System.out.println("ACTUAL: "+objects);
     }
     public Obj colliding(Entity e){
         for(Obj obj : objects){
@@ -55,8 +62,8 @@ public class ObjectHandler {
     }
     public void draw(Graphics2D g2){
         objects.forEach((n) -> n.draw(g2));
-
-        debug(g2);
+        if(Window.debug)
+            debug(g2);
     }
 
 

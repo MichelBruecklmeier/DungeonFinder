@@ -18,37 +18,41 @@ public class ObjectDataLoader {
         loadMap();
     }
     public void loadMap() {
+        settings.clear();
+        objects.clear();
         try{
+
             File map = new File(Paths.get("res\\rooms\\"+ Window.currentRoom).toAbsolutePath().toString());
             Scanner reader = new Scanner(map);
             //Looks only for the __OBJECT_DATA__ because that's all we care about
-            while(reader.hasNext() )
+            while(reader.hasNext())
                 if(reader.nextLine().contains("__Objects"))
                     break;
 
             //Add every line after that
             while(reader.hasNextLine()){
                 String line = reader.nextLine();
+                System.out.println(line);
                 //End when we reach the props data section
                 if(line.contains("__Props"))
                     break;
 
-                System.out.println(line);
                 settings.add(line);
             }
+            reader.close();
 
         }catch(IOException e){
             System.out.println("Failed loading object data");
-        } finally {
-            process();
         }
+        process();
     }
     //This will take each individual element of the settings and distribute it to proper methods
     public void process(){
-        System.out.println(settings);
+        System.out.println("Settings: "+settings);
         for(int j = 0; j < settings.size(); j++){
             String[] elements = settings.get(j).split("\\{");
-            System.out.println(Arrays.toString(elements));
+            System.out.println("Elements:" + Arrays.toString(elements));
+
             //To get rid of the end } we use this
             for(int i = 0; i < elements.length; i++){
                 elements[i] = elements[i].replace("}","");
@@ -67,6 +71,7 @@ public class ObjectDataLoader {
                 }
             }
         }
+        System.out.println("OBJECTS: "+objects);
     }
     private int[] getStartingPos(String setting){
         String pos = setting.split("\\(")[1].split("\\)")[0];
@@ -82,7 +87,14 @@ public class ObjectDataLoader {
         String sType = setting.split("doorType:")[1].split("[,}]")[0];
         int type = Integer.parseInt(sType);
         int[] pos = getStartingPos(setting);
-        objects.add(new OBJ_Door(pos[0],pos[1],type,getId(setting),window.tileManager.currentTiles[pos[1]][pos[0]]));
+        if(setting.contains("room:")){
+            String room = setting.split("room:\"")[1].split("\"")[0];
+            System.out.println(room);
+            objects.add(new OBJ_Door(pos[0],pos[1],type,getId(setting),window.tileManager.currentTiles[pos[1]][pos[0]],room));
+
+        }
+        else
+            objects.add(new OBJ_Door(pos[0],pos[1],type,getId(setting),window.tileManager.currentTiles[pos[1]][pos[0]]));
 
     }
 

@@ -2,6 +2,7 @@ package obj;
 
 import Utils.UtilityTool;
 import entity.Entity;
+import main.Window;
 import tile.MapTile;
 import tile.Tile;
 import tile.TileManager;
@@ -12,6 +13,7 @@ import java.io.IOException;
 
 public class OBJ_Door extends Obj implements Interactables {
     Tile doorFrame;
+    String room;
     public boolean unlocked = false;
     public OBJ_Door() {
         isVisible = true;
@@ -19,6 +21,14 @@ public class OBJ_Door extends Obj implements Interactables {
         ANIMATION_SPEED = 5;
 
         PICK_UP = true;
+    }
+    public OBJ_Door(int x, int y, int type, int id, MapTile frame, String room,boolean unlocked) {
+        this(x, y, type, id, frame,room);
+        this.unlocked = unlocked;
+    }
+    public OBJ_Door(int x, int y, int type, int id, MapTile frame, String room) {
+        this(x,y,type,id,frame);
+        this.room = room+".txt";
     }
     public OBJ_Door(int x, int y, int type, int id, MapTile frame){
         this();
@@ -33,6 +43,7 @@ public class OBJ_Door extends Obj implements Interactables {
 
         try {
             setImage( new BufferedImage[]{switch(type){
+                case 0 -> null;
                 case 1 -> UtilityTool.cutImagePiece(UtilityTool.loadImage("tiles\\tiles.png"), 1, 16, TileManager.TILE_SIZE / 16, 0, 33)[0];
                 case 2 -> UtilityTool.cutImagePiece(UtilityTool.loadImage("tiles\\tiles.png"), 1, 16, TileManager.TILE_SIZE / 16, 1, 33)[0];
                 case 3 -> UtilityTool.cutImagePiece(UtilityTool.loadImage("tiles\\tiles.png"), 1, 16, TileManager.TILE_SIZE / 16, 1, 34)[0];
@@ -50,7 +61,12 @@ public class OBJ_Door extends Obj implements Interactables {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        setCollider(new Rectangle(posX-20,posY-20,collider.width+40,collider.height+40));
+        if(ANIMATION[0] == null)
+            unlocked = true;
+        setCollider(new Rectangle(posX-6,posY-6,collider.width+12,collider.height+12));
+
+
+
         rescale();
 
     }
@@ -67,6 +83,7 @@ public class OBJ_Door extends Obj implements Interactables {
                 isVisible = true;
             }
         }
+
     }
 
     @Override
@@ -89,6 +106,12 @@ public class OBJ_Door extends Obj implements Interactables {
         isVisible = false;
         doorFrame.collider = false;
         unlocked = true;
+        System.out.println(room);
+        if(room != null){
+            System.out.println(room);
+            Window.currentRoom = room;
+            Window.doRoomChange = true;
+        }
         return null;
     }
 }

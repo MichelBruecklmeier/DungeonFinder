@@ -32,9 +32,12 @@ public class Window extends JPanel implements Runnable {
     public static double RATIO = SCREEN_WIDTH/SCREEN_HEIGHT;
     public static int TICKER = 1;
     public static String currentRoom = "example.txt";
+    public static boolean debug = false;
+    private String oldRoom = currentRoom;
     ScreenPrint textDisplay = new ScreenPrint();
     Thread thread;
     KeyHandler keyHandler = new KeyHandler();
+    public static boolean doRoomChange = false;
     public TileManager tileManager;
     //Weird work around just go with it trust ong ong
     public ObjectHandler objectHandler;
@@ -52,23 +55,35 @@ public class Window extends JPanel implements Runnable {
     public void loadPlayerStart(){
 
     }
-    public void init(){
-        tileManager = new TileManager();
-
+    public int[] loadPlayerStartPos(){
         int x = 0;
         int y = 0;
         try {
-            String[] str = new Scanner(UtilityTool.loadFile("res\\rooms\\example.txt")).nextLine().split(",");
+            String[] str = new Scanner(UtilityTool.loadFile("res\\rooms\\"+currentRoom)).nextLine().split(",");
             x = Integer.parseInt(str[0]);
             y = Integer.parseInt(str[1]);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        player = new ENT_Player(x*TileManager.TILE_SIZE,y*TileManager.TILE_SIZE,10,10,"characters/main/elf.png","Player",this);
+        return new int[]{x,y};
+    }
+    public void init(){
+        tileManager = new TileManager();
+        int[] pos = loadPlayerStartPos();
+
+        player = new ENT_Player(pos[0]*TileManager.TILE_SIZE,pos[1]*TileManager.TILE_SIZE,10,10,"characters/main/elf.png","Player",this);
         Entities.add(player);
         tileManager.load(currentRoom);
         objectHandler = new ObjectHandler(this);
+    }
+
+    public void changeRoom(String room){
+        currentRoom = room;
+        tileManager.load(currentRoom);
+        objectHandler.loadMap();
+        int[] pos = loadPlayerStartPos();
+        player.setPos(pos[0]*TileManager.TILE_SIZE,pos[1]*TileManager.TILE_SIZE);
     }
 
     public void startThread(){
@@ -116,7 +131,13 @@ public class Window extends JPanel implements Runnable {
 
 
     public void update(){
-        Entities.forEach((n) -> n.update());
+        if(doRoomChange){
+            doRoomChange = false;
+            oldRoom = currentRoom;
+            System.out.println("Triggered");
+            changeRoom(currentRoom);
+        }
+        Entities.forEach(Entity::update);
         objectHandler.update();
         TICKER++;
     }

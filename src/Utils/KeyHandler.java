@@ -8,6 +8,7 @@ public class KeyHandler implements KeyListener {
     public static int keyCodePressed = -1;
     public static int keyCodeReleased = -1;
     public static char keyCharPressed = 0;
+
     public static int[] keyCodeCombo = new int[0];
     public static boolean[] keys = new boolean[256];
 

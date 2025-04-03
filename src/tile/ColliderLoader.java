@@ -41,6 +41,7 @@ public class ColliderLoader {
                 }
                 row ++;
             }
+            reader.close();
 
         } catch (FileNotFoundException e) {
             System.err.println("Failed to load file");
