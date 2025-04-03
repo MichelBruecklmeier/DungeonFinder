@@ -28,10 +28,14 @@ public class Window extends JPanel implements Runnable {
     //Keep at/below 60fps
     public final double lowerTime = 0.0167f;
 
+    //TODO: make it count and place strings based on how many are in the file system
+    public static String[] mapNames = new String[]{"example.txt","room1.txt"};
+
 
     public static double RATIO = SCREEN_WIDTH/SCREEN_HEIGHT;
     public static int TICKER = 1;
     public static String currentRoom = "example.txt";
+
     public static boolean debug = false;
     private String oldRoom = currentRoom;
     ScreenPrint textDisplay = new ScreenPrint();

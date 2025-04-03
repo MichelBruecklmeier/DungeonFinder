@@ -86,7 +86,8 @@ class Inventory{
         return false;
     }
     public void remove(int slot){
-        inventory[slot]=null;
+        if(!(slot<0))
+            inventory[slot]=null;
     }
 }
 
@@ -115,6 +116,7 @@ public class ENT_Player extends Entity {
             case 7 -> Type.DEATH_LEFT;
             case 8 -> Type.RESPAWN;
             default -> Type.IDLE_RIGHT;
+
         };
         g2.drawImage(ENTITY_ANIMATION[type.get()][type.itt()], posX, posY, null);
         if(Window.debug)
@@ -183,11 +185,14 @@ public class ENT_Player extends Entity {
             inventory.add(obj.pickup());
             System.out.println(Arrays.toString(inventory.inventory));
         }
-        else if(obj.type.equals("door") && inventory.getItem("key") != -1 || obj.id == -1){
+        else if((obj.type.equals("door") && inventory.getItem("key") != -1) || obj.id == -1){
             if(inventory.getItemId(obj.id) == inventory.getItem("key") ){
-                obj.onCollide();
-            }
+                obj.interact();
 
+                inventory.remove(inventory.getItem("key"));
+            }
+        } if(obj.type.equals("door")){
+            obj.onCollide();
         }
     }
     double xChange = 0;

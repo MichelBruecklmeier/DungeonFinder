@@ -14,12 +14,12 @@ import java.io.IOException;
 public class OBJ_Door extends Obj implements Interactables {
     Tile doorFrame;
     String room;
-    public boolean unlocked = false;
+    public boolean unlocked;
     public OBJ_Door() {
         isVisible = true;
         this.type = "door";
         ANIMATION_SPEED = 5;
-
+        unlocked = false;
         PICK_UP = true;
     }
     public OBJ_Door(int x, int y, int type, int id, MapTile frame, String room,boolean unlocked) {
@@ -70,7 +70,7 @@ public class OBJ_Door extends Obj implements Interactables {
         rescale();
 
     }
-    private int openTime = 1000;
+    private int openTime = 500;
     private int timeOpen = 0;
     @Override
     public void update(){
@@ -93,6 +93,9 @@ public class OBJ_Door extends Obj implements Interactables {
 
     @Override
     public void interact() {
+        isVisible = false;
+        doorFrame.collider = false;
+        unlocked = true;
 
     }
 
@@ -103,15 +106,15 @@ public class OBJ_Door extends Obj implements Interactables {
 
     @Override
     public Obj onCollide() {
-        isVisible = false;
-        doorFrame.collider = false;
-        unlocked = true;
-        System.out.println(room);
-        if(room != null){
+        if(unlocked && room != null){
             System.out.println(room);
             Window.currentRoom = room;
             Window.doRoomChange = true;
         }
-        return null;
+        if(unlocked){
+            isVisible = false;
+            doorFrame.collider = false;
+        }
+        return this;
     }
 }

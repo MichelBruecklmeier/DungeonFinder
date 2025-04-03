@@ -12,6 +12,7 @@ import java.util.Scanner;
 public class ObjectDataLoader {
     ArrayList<String> settings = new ArrayList<String>();
     ArrayList<Obj> objects = new ArrayList<Obj>();
+    private int currentIndex = 0;
     Window window;
     public ObjectDataLoader(Window window) {
         this.window = window;
@@ -20,6 +21,7 @@ public class ObjectDataLoader {
     public void loadMap() {
         settings.clear();
         objects.clear();
+        currentIndex = 0;
         try{
 
             File map = new File(Paths.get("res\\rooms\\"+ Window.currentRoom).toAbsolutePath().toString());
@@ -68,7 +70,9 @@ public class ObjectDataLoader {
                         case "key" -> processKey(element);
                         case "door" -> processDoor(element);
                     }
+                    currentIndex++;
                 }
+
             }
         }
         System.out.println("OBJECTS: "+objects);
@@ -95,7 +99,11 @@ public class ObjectDataLoader {
         }
         else
             objects.add(new OBJ_Door(pos[0],pos[1],type,getId(setting),window.tileManager.currentTiles[pos[1]][pos[0]]));
-
+        if(setting.contains("unlocked:")){
+            String unlocked = setting.split("unlocked:")[1].split("[,}]")[0];
+            OBJ_Door door = (OBJ_Door) objects.get(currentIndex);
+            door.unlocked = unlocked.toLowerCase().contains("true");
+        }
     }
 
     public void processKey(String setting){

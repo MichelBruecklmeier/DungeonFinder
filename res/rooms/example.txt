@@ -23,6 +23,6 @@
 __Objects
 {(2,2),type:"key",id:0}
 {(15,8),type:"door",doorType:5,id:0}
-{(4,0),type:"door",doorType:0,id:-1,room:"room1"}
+{(4,0),type:"door",doorType:0,id:-1,room:"room1",unlocked:true}
 
 __Props
