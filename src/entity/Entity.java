@@ -40,7 +40,7 @@ public abstract class  Entity {
         this.name = name;
         id++;
         try{
-            ENTITY_IMAGE = UtilityTool.loadImage(imagePath);
+            ENTITY_IMAGE = UtilityTool.loadImage("res\\"+imagePath);
         } catch (IOException e) {
             System.err.println("Failed to load image " + imagePath + ": " + e.getMessage()+ " |ID: "+id);
         }

@@ -39,6 +39,9 @@ public class MapTile extends Tile{
             }
         }
     }
+    public String toString(){
+        return "Collider: "+collider+" ID: "+ID;
+    }
 
 
 }

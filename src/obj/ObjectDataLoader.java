@@ -19,12 +19,12 @@ public class ObjectDataLoader {
         loadMap();
     }
     public void loadMap() {
-        settings.clear();
-        objects.clear();
+        settings = new ArrayList<>();
+        objects = new ArrayList<>();
         currentIndex = 0;
         try{
 
-            File map = new File(Paths.get("res\\rooms\\"+ Window.currentRoom).toAbsolutePath().toString());
+            File map = new File(Paths.get("res/rooms/"+ Window.currentRoom).toAbsolutePath().toString());
             Scanner reader = new Scanner(map);
             //Looks only for the __OBJECT_DATA__ because that's all we care about
             while(reader.hasNext())
@@ -63,9 +63,9 @@ public class ObjectDataLoader {
             for(String element : elements){
                 if(!element.isEmpty()) {
                     //all we need to see is the type of the object then hand it off to the method
-                    System.out.println(element);
-                    String type = element.split("type:\"")[1].split("\",")[0];
 
+                    String type = element.split("type:\"")[1].split("\",")[0];
+                    System.out.println("type: "+type);
                     switch (type) {
                         case "key" -> processKey(element);
                         case "door" -> processDoor(element);
@@ -112,6 +112,7 @@ public class ObjectDataLoader {
         objects.add(new OBJ_Key(pos[0],pos[1],getId(setting)));
     }
     public ArrayList<Obj> getObjects() {
-        return objects;
+
+        return new ArrayList<>(objects);
     }
 }

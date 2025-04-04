@@ -185,7 +185,7 @@ public class ENT_Player extends Entity {
             inventory.add(obj.pickup());
             System.out.println(Arrays.toString(inventory.inventory));
         }
-        else if((obj.type.equals("door") && inventory.getItem("key") != -1) || obj.id == -1){
+        else if((obj.type.equals("door") && inventory.getItem("key") != -1)){
             if(inventory.getItemId(obj.id) == inventory.getItem("key") ){
                 obj.interact();
 

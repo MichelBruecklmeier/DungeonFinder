@@ -15,7 +15,8 @@ public class OBJ_Door extends Obj implements Interactables {
     Tile doorFrame;
     String room;
     public boolean unlocked;
-    public OBJ_Door() {
+    public OBJ_Door(int id) {
+        super(id);
         isVisible = true;
         this.type = "door";
         ANIMATION_SPEED = 5;
@@ -31,12 +32,11 @@ public class OBJ_Door extends Obj implements Interactables {
         this.room = room+".txt";
     }
     public OBJ_Door(int x, int y, int type, int id, MapTile frame){
-        this();
+        this(id);
         doorFrame=frame;
         doorFrame.collider = true;
         row = y;
         col = x;
-        this.id = id;
 
 
         setPos(x,y);
@@ -44,14 +44,14 @@ public class OBJ_Door extends Obj implements Interactables {
         try {
             setImage( new BufferedImage[]{switch(type){
                 case 0 -> null;
-                case 1 -> UtilityTool.cutImagePiece(UtilityTool.loadImage("tiles\\tiles.png"), 1, 16, TileManager.TILE_SIZE / 16, 0, 33)[0];
-                case 2 -> UtilityTool.cutImagePiece(UtilityTool.loadImage("tiles\\tiles.png"), 1, 16, TileManager.TILE_SIZE / 16, 1, 33)[0];
-                case 3 -> UtilityTool.cutImagePiece(UtilityTool.loadImage("tiles\\tiles.png"), 1, 16, TileManager.TILE_SIZE / 16, 1, 34)[0];
-                case 4 -> UtilityTool.cutImagePiece(UtilityTool.loadImage("tiles\\tiles.png"), 1, 16, TileManager.TILE_SIZE / 16, 12, 33)[0];
-                case 5 -> UtilityTool.cutImagePiece(UtilityTool.loadImage("tiles\\tiles.png"), 1, 16, TileManager.TILE_SIZE / 16, 4, 37)[0];
-                case 6 -> UtilityTool.cutImagePiece(UtilityTool.loadImage("tiles\\tiles.png"), 1, 16, TileManager.TILE_SIZE / 16, 5, 37)[0];
-                case 7 -> UtilityTool.cutImagePiece(UtilityTool.loadImage("tiles\\tiles.png"), 1, 16, TileManager.TILE_SIZE / 16, 5, 38)[0];
-                case 8 -> UtilityTool.cutImagePiece(UtilityTool.loadImage("tiles\\tiles.png"), 1, 16, TileManager.TILE_SIZE / 16, 6, 38)[0];
+                case 1 -> UtilityTool.cutImagePiece(UtilityTool.loadImage("res/tiles/tiles.png"), 1, 16, TileManager.TILE_SIZE / 16, 0, 33)[0];
+                case 2 -> UtilityTool.cutImagePiece(UtilityTool.loadImage("res/tiles/tiles.png"), 1, 16, TileManager.TILE_SIZE / 16, 1, 33)[0];
+                case 3 -> UtilityTool.cutImagePiece(UtilityTool.loadImage("res/tiles/tiles.png"), 1, 16, TileManager.TILE_SIZE / 16, 1, 34)[0];
+                case 4 -> UtilityTool.cutImagePiece(UtilityTool.loadImage("res/tiles/tiles.png"), 1, 16, TileManager.TILE_SIZE / 16, 12, 33)[0];
+                case 5 -> UtilityTool.cutImagePiece(UtilityTool.loadImage("res/tiles/tiles.png"), 1, 16, TileManager.TILE_SIZE / 16, 4, 37)[0];
+                case 6 -> UtilityTool.cutImagePiece(UtilityTool.loadImage("res/tiles/tiles.png"), 1, 16, TileManager.TILE_SIZE / 16, 5, 37)[0];
+                case 7 -> UtilityTool.cutImagePiece(UtilityTool.loadImage("res/tiles/tiles.png"), 1, 16, TileManager.TILE_SIZE / 16, 5, 38)[0];
+                case 8 -> UtilityTool.cutImagePiece(UtilityTool.loadImage("res/tiles/tiles.png"), 1, 16, TileManager.TILE_SIZE / 16, 6, 38)[0];
 
                 default -> null;
             }});
@@ -75,7 +75,7 @@ public class OBJ_Door extends Obj implements Interactables {
     @Override
     public void update(){
 
-        if(unlocked&&!isVisible) {
+        if(ANIMATION[0] != null&&unlocked&&!isVisible) {
             doorFrame.collider = false;
             timeOpen++;
             if (timeOpen > openTime) {
@@ -86,10 +86,6 @@ public class OBJ_Door extends Obj implements Interactables {
 
     }
 
-    @Override
-    public boolean colliding(Entity e) {
-        return isVisible && e.getCollider().intersects(collider);
-    }
 
     @Override
     public void interact() {
@@ -116,5 +112,15 @@ public class OBJ_Door extends Obj implements Interactables {
             doorFrame.collider = false;
         }
         return this;
+    }
+
+    @Override
+    public void refresh() {
+
+    }
+
+    @Override
+    public String toString(){
+        return super.toString() + " unlocked: "+unlocked;
     }
 }

@@ -7,21 +7,21 @@ import tile.TileManager;
 import java.io.IOException;
 
 public class OBJ_Key extends Obj{
-    public OBJ_Key() {
+    public OBJ_Key(int id) {
+        super(id);
         ANIMATION_SPEED = 5;
         PICK_UP = true;
         isVisible = true;
         type = "key";
     }
     public OBJ_Key(int x, int y,int id){
-        this();
+        this(id);
         row = y;
         col = x;
-        this.id = id;
         setPos(x,y);
 
         try {
-            setImage(UtilityTool.cutImagePiece(UtilityTool.loadImage("props\\pickup_items_animated.png"), 4, 16, TileManager.TILE_SIZE / 16, 0, 1));
+            setImage(UtilityTool.cutImagePiece(UtilityTool.loadImage("res/props/pickup_items_animated.png"), 4, 16, TileManager.TILE_SIZE / 16, 0, 1));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -30,10 +30,7 @@ public class OBJ_Key extends Obj{
 
     }
 
-    @Override
-    public boolean colliding(Entity e) {
-        return isVisible && e.getCollider().intersects(collider);
-    }
+
 
     @Override
     public void interact() {
@@ -49,5 +46,10 @@ public class OBJ_Key extends Obj{
     @Override
     public Obj onCollide() {
         return pickup();
+    }
+
+    @Override
+    public void refresh() {
+
     }
 }

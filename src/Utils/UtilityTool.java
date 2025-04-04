@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 public class UtilityTool {
 	//Simple load method
 	public static BufferedImage loadImage(String path) throws IOException {
-		return ImageIO.read(new File(Paths.get("res\\"+path).toAbsolutePath().toString()));
+		return ImageIO.read(new File(Paths.get(path).toAbsolutePath().toString()));
 	}
 	//Scale image to save us from scaling every time we need too
 	public static BufferedImage scaleImage(BufferedImage original, int width, int height) {

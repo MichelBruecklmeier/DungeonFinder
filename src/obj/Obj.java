@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import Utils.UtilityTool;
+import entity.Entity;
 import main.Window;
 import tile.TileManager;
 
@@ -13,7 +14,7 @@ public abstract class Obj implements Interactables{
     public String type;
     private static int ID = 0;
     public int objectId = ID++;
-    public int id;
+    public final int id;
     int row;
     int col;
 
@@ -23,8 +24,11 @@ public abstract class Obj implements Interactables{
     int currentIndex;
     //Have some boolean values to define what the object behaviour has
     boolean  PICK_UP;
-    public Obj(){
+    public Obj(int id){
         //This should never be used unless calling another object
+        this.id = id;
+    }
+    public void setId(int id){
     }
 
 
@@ -43,7 +47,13 @@ public abstract class Obj implements Interactables{
     public void setCollider(Rectangle collider) {
         this.collider = collider;
     }
-
+    public boolean colliding(Entity e) {
+        if(e.getCollider().intersects(collider)){
+            System.out.println("Colliding: "+type);
+            return true;
+        }
+        return false;
+    }
     public void setPos(int x, int y) {
         posX = x*TileManager.TILE_SIZE;
         posY = y*TileManager.TILE_SIZE;

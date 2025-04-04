@@ -28,15 +28,17 @@ public class Window extends JPanel implements Runnable {
     //Keep at/below 60fps
     public final double lowerTime = 0.0167f;
 
-    //TODO: make it count and place strings based on how many are in the file system
-    public static String[] mapNames = new String[]{"example.txt","room1.txt"};
-
+    //This list changes based on how many rooms the person has been too
+    //Also helps identify the corresponding room name to the list index
+    public static String[] mapsLoaded = {"example.txt"};
+    public static String currentRoom = "example.txt";
 
     public static double RATIO = SCREEN_WIDTH/SCREEN_HEIGHT;
     public static int TICKER = 1;
-    public static String currentRoom = "example.txt";
 
-    public static boolean debug = false;
+
+
+    public static boolean debug = true;
     private String oldRoom = currentRoom;
     ScreenPrint textDisplay = new ScreenPrint();
     Thread thread;
@@ -83,9 +85,23 @@ public class Window extends JPanel implements Runnable {
     }
 
     public void changeRoom(String room){
+        System.out.println("ROOM_CHANGED: "+room);
+        boolean newRoom = false;
+        for(int i = 0; i < mapsLoaded.length; i++){
+            if(mapsLoaded[i].equals(room)){
+                objectHandler.setCurrentRoomIndex(i);
+                tileManager.setCurrentRoomIndex(i);
+                newRoom = true;
+                break;
+            }
+        }
         currentRoom = room;
-        tileManager.load(currentRoom);
-        objectHandler.loadMap();
+        if(!newRoom){
+            objectHandler.loadMap();
+            tileManager.load(currentRoom);
+        }
+
+
         int[] pos = loadPlayerStartPos();
         player.setPos(pos[0]*TileManager.TILE_SIZE,pos[1]*TileManager.TILE_SIZE);
     }

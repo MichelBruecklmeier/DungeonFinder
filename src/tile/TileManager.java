@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class TileManager {
@@ -19,21 +21,32 @@ public class TileManager {
     public static int TILE_WORLD_ROWS = 100;
     public static int TILE_WORLD_COLS = 100;
     public static int TILE_SIZE = Window.SCREEN_HEIGHT / TILE_ROWS;
+    public int currentRoomIndex = 0;
     ColliderLoader colliderLoader = new ColliderLoader();
     Tile[] TILES = new Tile[45*13]; //Overall tile size
      int[][] currentTileMap = new int[TILE_ROWS][TILE_COLS];
-    public MapTile[][] currentTiles = new MapTile[TILE_ROWS][TILE_COLS];
+    public MapTile[][] currentTiles;
+    public ArrayList<MapTile[][]> savedCurrentTiles = new ArrayList<>();
     public TileManager() {
         loadImages();
         Tile.scale = TILE_SIZE/16;
         colliderLoader.setCollider(TILES);
+    }
+    private MapTile[][] copyTileMap(MapTile[][] tileMap) {
+        MapTile[][] copy = new MapTile[tileMap.length][tileMap[0].length];
+        for (int i = 0; i < tileMap.length; i++) {
+            for (int j = 0; j < tileMap[0].length; j++) {
+                copy[i][j] = tileMap[i][j].copy();
+            }
+        }
+        return copy;
     }
     //Method to load images and then create a new tile object to be placed into
     //The tile object is going to be used to hold data for image and colliders and any specail properties
     public void loadImages(){
         try {
             BufferedImage[][] temp = new BufferedImage[45][13];
-            BufferedImage img = UtilityTool.loadImage("TILES/TILES.png");
+            BufferedImage img = UtilityTool.loadImage("res/tiles/tiles.png");
             for(int i = 0; i < temp.length; i++){
                 temp[i] = UtilityTool.cutImagePiece(img, temp[i].length,16,TILE_SIZE/16.,0,i);
             }
@@ -49,6 +62,7 @@ public class TileManager {
     }
     //The load method is used to load the tilemap of the current room to be loaded these are used as indecies in the TILES[] array
     public void load(String path){
+        currentTiles = new MapTile[TILE_ROWS][TILE_COLS];
         try{
             File file = new File(Paths.get("res\\rooms\\"+path).toAbsolutePath().toString());
             Scanner reader = new Scanner(file);
@@ -64,19 +78,25 @@ public class TileManager {
                     currentTiles[row][col].offset(col*(TILE_SIZE),row*(TILE_SIZE));
                 }
             }
-
+            savedCurrentTiles.add(currentTiles);
 
         } catch(FileNotFoundException e){
             e.printStackTrace();
         }
+    }
+    //Allows the on level change to make the correct room
+    public void setCurrentRoomIndex(int index){
+        currentRoomIndex = index;
+        currentTiles = savedCurrentTiles.get(currentRoomIndex);
+        System.out.println(Arrays.toString(currentTiles));
     }
     //Draw loops over all tileMap ints then that corrisponds to the indicie in the TILES[] array of the right map
     public void draw(Graphics2D g2){
         int counter = 1;
         for(int row = 0; row < TILE_ROWS; row++){
             for(int col = 0; col < TILE_COLS; col++){
-                if(currentTileMap[row][col] != -1) {
-                    g2.drawImage(TILES[currentTileMap[row][col]].image, col * TILE_SIZE, row * TILE_SIZE, null);
+                if(true) {
+                    g2.drawImage(currentTiles[row][col].image, col * TILE_SIZE, row * TILE_SIZE, null);
 //                    g2.drawRect(col * TILE_SIZE, row * TILE_SIZE, TILES[currentTileMap[row][col]].image.getWidth(), TILES[currentTileMap[row][col]].image.getHeight());
                 }
             }

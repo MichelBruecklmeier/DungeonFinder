@@ -7,11 +7,12 @@ import tile.TileManager;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import main.Window;
 public class ObjectHandler {
-    public ArrayList<Obj> objects = new ArrayList<Obj>();
+    public ArrayList<Obj> objects = new ArrayList<>();
+    public int currentRoomIndex = 0;
+    public ArrayList<ArrayList<Obj>> roomObjectArchive = new ArrayList<>();
     BufferedImage[][] ALL_ANIMATIONS = new BufferedImage[8][4];
     ObjectDataLoader loader;
     public static BufferedImage animationSheet;
@@ -21,12 +22,13 @@ public class ObjectHandler {
         loadObjects();
     }
     public void loadMap(){
+        System.out.println("LOADING_OBJECT_MAP: "+Window.currentRoom);
         loader.loadMap();
         loadObjects();
     }
     public void loadAnimations() {
         try{
-            animationSheet = UtilityTool.loadImage("props\\pickup_items_animated.png");
+            animationSheet = UtilityTool.loadImage("res/props/pickup_items_animated.png");
             for(int row = 0; row < ALL_ANIMATIONS.length; row++){
                 ALL_ANIMATIONS[row] = UtilityTool.cutImagePiece(animationSheet, ALL_ANIMATIONS[row].length, 16, TileManager.TILE_SIZE/16,0,row);
             }
@@ -36,10 +38,9 @@ public class ObjectHandler {
         }
     }
     public void loadObjects(){
-        //TEMPORARY
         objects = loader.getObjects();
-        System.out.println("EXPECTED: "+loader.getObjects());
-        System.out.println("ACTUAL: "+objects);
+        roomObjectArchive.add(objects);
+
     }
     public Obj colliding(Entity e){
         for(Obj obj : objects){
@@ -59,6 +60,11 @@ public class ObjectHandler {
         objects.forEach(Obj::update);
 
 
+    }
+    public void setCurrentRoomIndex(int index){
+        currentRoomIndex = index;
+        objects = roomObjectArchive.get(currentRoomIndex);
+        System.out.println("roomObjectArchive: "+objects);
     }
     public void draw(Graphics2D g2){
         objects.forEach((n) -> n.draw(g2));
