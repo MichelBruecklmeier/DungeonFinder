@@ -15,7 +15,9 @@ public class Prop {
         this.type = type;
         this.posX = posX;
         this.posY = posY;
-        this.tiles = tiles;
+        for(MapTile tile : tiles) {
+            tile.collider = true;
+        }
     }
     public void draw(Graphics2D g2){
         for(int i =0; i<images.length; i++){
