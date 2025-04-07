@@ -17,7 +17,7 @@ public abstract class Obj implements Interactables{
     public final int id;
     int row;
     int col;
-
+    char direction;
     boolean isVisible;
     int posX, posY;
     int ANIMATION_SPEED;

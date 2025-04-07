@@ -56,6 +56,11 @@ public class OBJ_Door extends Obj implements Interactables {
                 default -> null;
             }});
 
+            direction = switch(type){
+                case 1 -> 'l';
+                default -> 'n';
+            };
+
 
 
         } catch (IOException e) {

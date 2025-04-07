@@ -132,7 +132,7 @@ public class ENT_Player extends Entity {
     void init() {
         frameSize = 16;
         scale = TileManager.TILE_SIZE/16.;
-        speed = 50;
+        setSpeed((int)(TileManager.TILE_SIZE/.75));
         ENTITY_ANIMATION = new BufferedImage[9][6];
         try {
             for(int i = 0; i < 9; i++) {
