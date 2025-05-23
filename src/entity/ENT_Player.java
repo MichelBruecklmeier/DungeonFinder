@@ -1,6 +1,7 @@
 package entity;
 
 import Utils.KeyHandler;
+import Utils.Logger;
 import Utils.UtilityTool;
 import main.Window;
 import obj.Obj;
@@ -93,9 +94,10 @@ class Inventory{
 
 public class ENT_Player extends Entity {
 
-
+//    Logger logger
     Window window;
     Inventory inventory = new Inventory();
+    Logger logger = new Logger("ENT_Player");
     private double fadeOffSpeed = 0.9;
     public ENT_Player(int starting_x, int starting_y, int width, int height, String imagePath, String name, Window window) {
 
@@ -126,6 +128,7 @@ public class ENT_Player extends Entity {
     public void debug(Graphics2D g2){
         g2.setColor(Color.BLACK);
         g2.draw(collisionBox);
+
     }
     private int[] offset;
 
@@ -139,7 +142,7 @@ public class ENT_Player extends Entity {
                 ENTITY_ANIMATION[i] = UtilityTool.cutImagePiece(ENTITY_IMAGE, 5, frameSize, TileManager.TILE_SIZE/16., 0, i);
             }
         } catch (IOException e) {
-            System.err.println("Failed to cut image");
+            logger.log(e.toString(),1);
         }
         //Set up the collider
         collisionBox = new Rectangle((int)(6*scale),(int)(7 *scale), (int)(6*scale), (int)(8*scale));
@@ -181,9 +184,10 @@ public class ENT_Player extends Entity {
 
     boolean coliding = false;
     private void objectCollisionHandler(Obj obj){
+        logger.log("Colliding: "+obj,3);
         if(obj.type.equals("key")){
             inventory.add(obj.pickup());
-            System.out.println(Arrays.toString(inventory.inventory));
+
         }
         else if((obj.type.equals("door") && inventory.getItem("key") != -1)){
             if(inventory.getItemId(obj.id) == inventory.getItem("key") ){

@@ -35,7 +35,6 @@ public class Tile {
     //This is meant for only the current tile map not the old tile map
 
     public void setRectangle(int x, int y, int width, int height, int index){
-        System.out.println("New rect: "+y+" "+x+" "+width+" "+height +" at: "+index);
         colliders[index] = new Rectangle(x, y, width , height );
     }
 

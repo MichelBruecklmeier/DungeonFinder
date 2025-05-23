@@ -23,4 +23,3 @@ __Objects
 {(5,16),type:"door",doorType:0,id:-1,room:"example"}
 
 __Props
-{()

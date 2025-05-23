@@ -1,5 +1,6 @@
 package obj;
 
+import Utils.Logger;
 import Utils.UtilityTool;
 import entity.Entity;
 import tile.TileManager;
@@ -15,6 +16,7 @@ public class ObjectHandler {
     public ArrayList<ArrayList<Obj>> roomObjectArchive = new ArrayList<>();
     BufferedImage[][] ALL_ANIMATIONS = new BufferedImage[8][4];
     ObjectDataLoader loader;
+    Logger logger = new Logger("ObjectHandler");
     public static BufferedImage animationSheet;
     public ObjectHandler(Window window) {
         loadAnimations();
@@ -22,7 +24,8 @@ public class ObjectHandler {
         loadObjects();
     }
     public void loadMap(){
-        System.out.println("LOADING_OBJECT_MAP: "+Window.currentRoom);
+        logger.log("LOADING_OBJECT_MAP: "+Window.currentRoom,3);
+
         loader.loadMap();
         loadObjects();
     }
@@ -64,7 +67,7 @@ public class ObjectHandler {
     public void setCurrentRoomIndex(int index){
         currentRoomIndex = index;
         objects = roomObjectArchive.get(currentRoomIndex);
-        System.out.println("roomObjectArchive: "+objects);
+        logger.log("roomObjectArchive: "+objects,3);
     }
     public void draw(Graphics2D g2){
         objects.forEach((n) -> n.draw(g2));

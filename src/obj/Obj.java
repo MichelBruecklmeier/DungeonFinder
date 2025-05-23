@@ -11,6 +11,7 @@ import tile.TileManager;
 public abstract class Obj implements Interactables{
     BufferedImage[] ANIMATION;
     Rectangle collider;
+    public boolean collided = true;
     public String type;
     private static int ID = 0;
     public int objectId = ID++;
@@ -49,7 +50,6 @@ public abstract class Obj implements Interactables{
     }
     public boolean colliding(Entity e) {
         if(e.getCollider().intersects(collider)){
-            System.out.println("Colliding: "+type);
             return true;
         }
         return false;

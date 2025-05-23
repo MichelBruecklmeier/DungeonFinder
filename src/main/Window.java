@@ -1,10 +1,12 @@
 package main;
 
 import Utils.KeyHandler;
+import Utils.Logger;
 import Utils.UtilityTool;
 import entity.ENT_Player;
 import entity.Entity;
 import obj.ObjectHandler;
+import props.PropDataLoader;
 import tile.TileManager;
 
 import javax.swing.*;
@@ -38,7 +40,8 @@ public class Window extends JPanel implements Runnable {
 
 
 
-    public static boolean debug = true;
+    public static boolean debug = false;
+    Logger logger = new Logger("Window");
     private String oldRoom = currentRoom;
     ScreenPrint textDisplay = new ScreenPrint();
     Thread thread;
@@ -49,6 +52,7 @@ public class Window extends JPanel implements Runnable {
     public ObjectHandler objectHandler;
     ArrayList<Entity> Entities = new ArrayList<Entity>();
     public ENT_Player player;
+    public PropDataLoader propDataLoader;
     public Window() {
         //We base the screen dimensions of the previous size to the ones we are going to assign
         this.setPreferredSize(new Dimension(TileManager.TILE_SIZE*TileManager.TILE_COLS,TileManager.TILE_SIZE*TileManager.TILE_ROWS));
@@ -85,7 +89,7 @@ public class Window extends JPanel implements Runnable {
     }
 
     public void changeRoom(String room){
-        System.out.println("ROOM_CHANGED: "+room);
+        logger.log("ROOM_CHANGED: "+room,3);
         boolean newRoom = false;
         for(int i = 0; i < mapsLoaded.length; i++){
             if(mapsLoaded[i].equals(room)){
@@ -154,7 +158,6 @@ public class Window extends JPanel implements Runnable {
         if(doRoomChange){
             doRoomChange = false;
             oldRoom = currentRoom;
-            System.out.println("Triggered");
             changeRoom(currentRoom);
         }
         Entities.forEach(Entity::update);

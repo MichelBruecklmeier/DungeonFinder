@@ -1,5 +1,6 @@
 package tile;
 
+import Utils.Logger;
 import Utils.UtilityTool;
 import entity.Entity;
 import main.Window;
@@ -22,15 +23,18 @@ public class TileManager {
     public static int TILE_WORLD_COLS = 100;
     public static int TILE_SIZE = Window.SCREEN_HEIGHT / TILE_ROWS;
     public int currentRoomIndex = 0;
+
     ColliderLoader colliderLoader = new ColliderLoader();
     Tile[] TILES = new Tile[45*13]; //Overall tile size
      int[][] currentTileMap = new int[TILE_ROWS][TILE_COLS];
     public MapTile[][] currentTiles;
     public ArrayList<MapTile[][]> savedCurrentTiles = new ArrayList<>();
+    Logger logger  = new Logger("TileManager");
     public TileManager() {
         loadImages();
         Tile.scale = TILE_SIZE/16;
         colliderLoader.setCollider(TILES);
+        logger.log("Initilized",3);
     }
     private MapTile[][] copyTileMap(MapTile[][] tileMap) {
         MapTile[][] copy = new MapTile[tileMap.length][tileMap[0].length];
@@ -82,13 +86,15 @@ public class TileManager {
 
         } catch(FileNotFoundException e){
             e.printStackTrace();
+        } finally {
+            logger.log("Loaded TileMap",6);
         }
     }
     //Allows the on level change to make the correct room
     public void setCurrentRoomIndex(int index){
         currentRoomIndex = index;
         currentTiles = savedCurrentTiles.get(currentRoomIndex);
-        System.out.println(Arrays.toString(currentTiles));
+        logger.log(Arrays.toString(currentTiles),3);
     }
     //Draw loops over all tileMap ints then that corrisponds to the indicie in the TILES[] array of the right map
     public void draw(Graphics2D g2){

@@ -95,8 +95,6 @@ public class ColliderLoader {
                 id = new int[length];
                 String line = setting.split("id:\\[")[1].split("],")[0];
                 String[] tokens = line.split(",");
-                System.out.println(line +" - "+Arrays.toString(tokens));
-                System.out.println(length);
                 for(int j = 0; j < tokens.length; j++){
                     id[j] = Integer.parseInt(tokens[j]);
                 }

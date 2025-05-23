@@ -40,6 +40,7 @@ public class OBJ_Key extends Obj{
     @Override
     public Obj pickup() {
         isVisible = false;
+        collided = false;
         return this;
     }
 

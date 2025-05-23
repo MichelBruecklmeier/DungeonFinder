@@ -83,9 +83,11 @@ public class OBJ_Door extends Obj implements Interactables {
         if(ANIMATION[0] != null&&unlocked&&!isVisible) {
             doorFrame.collider = false;
             timeOpen++;
+            collided = false;
             if (timeOpen > openTime) {
                 timeOpen = 0;
                 isVisible = true;
+                collided = true;
             }
         }
 
@@ -107,10 +109,12 @@ public class OBJ_Door extends Obj implements Interactables {
 
     @Override
     public Obj onCollide() {
+        if(!collided)
+            return null;
         if(unlocked && room != null){
-            System.out.println(room);
             Window.currentRoom = room;
             Window.doRoomChange = true;
+
         }
         if(unlocked){
             isVisible = false;

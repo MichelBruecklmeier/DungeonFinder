@@ -1,5 +1,6 @@
 package obj;
 
+import Utils.Logger;
 import main.Window;
 
 import java.io.File;
@@ -14,6 +15,7 @@ public class ObjectDataLoader {
     ArrayList<Obj> objects = new ArrayList<Obj>();
     private int currentIndex = 0;
     Window window;
+    Logger logger = new Logger("ObjectDataLoader");
     public ObjectDataLoader(Window window) {
         this.window = window;
         loadMap();
@@ -34,7 +36,6 @@ public class ObjectDataLoader {
             //Add every line after that
             while(reader.hasNextLine()){
                 String line = reader.nextLine();
-                System.out.println(line);
                 //End when we reach the props data section
                 if(line.contains("__Props"))
                     break;
@@ -44,16 +45,14 @@ public class ObjectDataLoader {
             reader.close();
 
         }catch(IOException e){
-            System.out.println("Failed loading object data");
+            logger.log("Failed loading object data",1);
         }
         process();
     }
     //This will take each individual element of the settings and distribute it to proper methods
     public void process(){
-        System.out.println("Settings: "+settings);
         for(int j = 0; j < settings.size(); j++){
             String[] elements = settings.get(j).split("\\{");
-            System.out.println("Elements:" + Arrays.toString(elements));
 
             //To get rid of the end } we use this
             for(int i = 0; i < elements.length; i++){
@@ -65,7 +64,6 @@ public class ObjectDataLoader {
                     //all we need to see is the type of the object then hand it off to the method
 
                     String type = element.split("type:\"")[1].split("\",")[0];
-                    System.out.println("type: "+type);
                     switch (type) {
                         case "key" -> processKey(element);
                         case "door" -> processDoor(element);
@@ -75,7 +73,7 @@ public class ObjectDataLoader {
 
             }
         }
-        System.out.println("OBJECTS: "+objects);
+        logger.log("OBJECTS: "+objects,3);
     }
     private int[] getStartingPos(String setting){
         String pos = setting.split("\\(")[1].split("\\)")[0];
@@ -93,7 +91,6 @@ public class ObjectDataLoader {
         int[] pos = getStartingPos(setting);
         if(setting.contains("room:")){
             String room = setting.split("room:\"")[1].split("\"")[0];
-            System.out.println(room);
             objects.add(new OBJ_Door(pos[0],pos[1],type,getId(setting),window.tileManager.currentTiles[pos[1]][pos[0]],room));
 
         }
